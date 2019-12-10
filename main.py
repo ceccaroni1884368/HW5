@@ -58,7 +58,7 @@ def node_distance():
     return dataframe
 
 
-def node_Travel_time():
+def node_travel_time():
     """
     :return: Pandas dataframe with time distances between each pair of nodes
     EX:
@@ -83,6 +83,12 @@ def node_Travel_time():
 
 
 def main():
+    node = node_coordinate()
+    distance = node_distance()
+    travel_time = node_travel_time()
+
+    G = nx.Graph()
+
     n = int(input("Insert number (1-4): "))
     while not all([n > 0, n < 5]):
         n = int(input("Insert number (1-4): "))
