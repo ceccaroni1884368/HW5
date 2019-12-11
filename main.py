@@ -25,9 +25,9 @@ def node_coordinate():
     with gzip.open('data/download/USA-road-d.CAL.co.gz', 'rt') as f:
         for line in f:
             if 'v' == line.split()[0]:
-                Id_Node.append(line.split()[1])
-                Latitude.append(line.split()[2])
-                Longitude.append(line.split()[3])
+                Id_Node.append(int(line.split()[1]))
+                Latitude.append(int(line.split()[2]))
+                Longitude.append(int(line.split()[3]))
     dataframe = pd.DataFrame({'Id Node': Id_Node,
                               'Latitude': Latitude,
                               'Longitude': Longitude})
@@ -49,9 +49,9 @@ def node_distance():
     with gzip.open('data/download/USA-road-d.CAL.gr.gz', 'rt') as f:
         for line in f:
             if 'a' == line.split()[0]:
-                Id_Node1.append(line.split()[1])
-                Id_Node2.append(line.split()[2])
-                d.append(line.split()[3])
+                Id_Node1.append(int(line.split()[1]))
+                Id_Node2.append(int(line.split()[2]))
+                d.append(int(line.split()[3]))
     dataframe = pd.DataFrame({'Id Node 1': Id_Node1,
                               'Id Node 2': Id_Node2,
                               'Weight': d})
@@ -73,9 +73,9 @@ def node_travel_time():
     with gzip.open('data/download/USA-road-d.CAL.gr.gz', 'rt') as f:
         for line in f:
             if 'a' == line.split()[0]:
-                Id_Node1.append(line.split()[1])
-                Id_Node2.append(line.split()[2])
-                t.append(line.split()[3])
+                Id_Node1.append(int(line.split()[1]))
+                Id_Node2.append(int(line.split()[2]))
+                t.append(int(line.split()[3]))
     dataframe = pd.DataFrame({'Id Node 1': Id_Node1,
                               'Id Node 2': Id_Node2,
                               'Weight': t})
