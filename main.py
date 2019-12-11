@@ -54,7 +54,7 @@ def node_distance():
                 d.append(line.split()[3])
     dataframe = pd.DataFrame({'Id Node 1': Id_Node1,
                               'Id Node 2': Id_Node2,
-                              'Distance': d})
+                              'Weight': d})
     return dataframe
 
 
@@ -78,16 +78,20 @@ def node_travel_time():
                 t.append(line.split()[3])
     dataframe = pd.DataFrame({'Id Node 1': Id_Node1,
                               'Id Node 2': Id_Node2,
-                              'Distance': t})
+                              'Weight': t})
     return dataframe
 
 
 def main():
+    # Loading data
+    print("Loading data...")
     node = node_coordinate()
-    distance = node_distance()
-    travel_time = node_travel_time()
+    d = node_distance()
+    t = node_travel_time()
+    net_d = d.copy()
+    net_d[['Weight']] = 1
+    # -------------
 
-    G = nx.Graph()
 
     n = int(input("Insert number (1-4): "))
     while not all([n > 0, n < 5]):
