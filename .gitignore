@@ -128,3 +128,5 @@ dmypy.json
 .idea/
 data/
 guida/
+main.ipynb
+.ipynb_checkpoints
