@@ -1,5 +1,7 @@
 from math import sqrt
-
+import networkx as nx
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
 
 def Functionality4(node, set_nodes, dist, nodes):
 
@@ -114,7 +116,7 @@ def Functionality4(node, set_nodes, dist, nodes):
     """
     sorted_set_nodes = sort_by_distance_as_the_crow_flies(node, set_nodes)
     path = [set_nodes[0]]
-    for i in range(len(sorted_set_nodes)-2):
+    for i in range(len(sorted_set_nodes)-1):
         start = sorted_set_nodes[i]
         end = sorted_set_nodes[i+1]
         temp_path = A_Star(nodes, dist, start, end, h)
@@ -123,5 +125,24 @@ def Functionality4(node, set_nodes, dist, nodes):
         else:
             path += temp_path[1:]
     print(path)
-    ## TODO: visualize a graph  
+
+    # Graph networkx
+    g = {key: dist[key] for key in path}
+    edges = [(path[i], path[i+1]) for i in range(len(path)-1)]
+    G=nx.Graph(g)
+
+    # Plot
+    figure(num=None, figsize=(20, 15), dpi=80, facecolor='w', edgecolor='k')
+    pos = {key:(nodes[key]['Latitude'],nodes[key]['Longitude']) for key in nodes}
+    nx.draw_networkx_nodes(G, pos, node_size=100, node_color='royalblue')
+    nx.draw_networkx_nodes(G, pos, node_size=150, node_color='red', nodelist=path)
+    nx.draw_networkx_nodes(G, pos, node_size=500, node_color='yellow', nodelist=sorted_set_nodes)
+
+    #nx.draw_networkx_nodes(G, pos, node_size=2000, nodelist=[188])
+    nx.draw_networkx_edges(G, pos, width=3, edge_color='royalblue', style='dashed')
+    nx.draw_networkx_edges(G, pos, width=3, edge_color='red', style='dashed', edgelist=edges)
+    nx.draw_networkx_labels(G, pos, font_size=6, font_family='sans-serif')
+
+    plt.show()
+
     return path
