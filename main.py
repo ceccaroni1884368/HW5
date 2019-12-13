@@ -125,6 +125,7 @@ def main():
         print("Enter the nodes to be visited separated by white space:", end='')
         set_nodes = list(map(int,input(" ").split()))
         func_4.Functionality4(node, set_nodes, dist, nodes)
+        # try Functionality4(2, [4,6,5,49], d, nodes)
 
 
 if __name__:
