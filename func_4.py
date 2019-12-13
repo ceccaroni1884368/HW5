@@ -3,6 +3,15 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
+
+"""
+The Functionality4 is an heuristic solution for the problem.
+Given a starting node H and a path P to visit, its operation is:
+1) Order the path P as the crow flies
+2) Approximate the minor path between two nodes with the algorithm A* (A_star)
+"""
+
+
 def Functionality4(node, set_nodes, dist, nodes):
 
     """
