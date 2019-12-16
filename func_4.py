@@ -84,12 +84,11 @@ def node_network_distance():
 
 def loading_data():
     # Loading data
-    print("Loading data...", end=' ')
+    print("Loading data...", end='', flush=True)
     nodes = node_coordinate()
     d = node_distance()
     t = node_travel_time()
     net_d = node_network_distance()
-    print("DONE!")
     return nodes, {'d': d, 't': t, 'n': net_d}  # d : physical distance, t : time distance, n : network distance
 
 
@@ -200,6 +199,7 @@ def Functionality4(node, set_nodes, d):
     return the list contain the shortest path
     """
     nodes, dict_distances = loading_data()
+    print("[DONE]")
     dist = dict_distances[d]
     sorted_set_nodes = sort_by_the_crow_flies(nodes, node, set_nodes)
     path = [set_nodes[0]]
