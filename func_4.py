@@ -3,13 +3,15 @@ from math import sqrt
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
+from collections import defaultdict
 
 
 """
 The Functionality4 is an heuristic solution for the problem.
 Given a starting node H and a path P to visit, its operation is:
 1) Order the path P as the crow flies
-2) Approximate the minor path between two nodes with the algorithm A* (A_star)
+2) Approximate the minor path between two nodes with the algorithm
+   dijkstra or A* (A_star)
 """
 
 
@@ -89,6 +91,8 @@ def loading_data():
     d = node_distance()
     t = node_travel_time()
     net_d = node_network_distance()
+    print("[DONE]")
+
     return nodes, {'d': d, 't': t, 'n': net_d}  # d : physical distance, t : time distance, n : network distance
 
 
@@ -162,6 +166,35 @@ def A_Star(nodes, graph, start, goal, h):
     return 'Not possible'
 
 
+def dijkstra(graph, start, end):
+    # Initialization
+    Q = {start}
+    P = set()
+    dist = defaultdict(lambda: float("inf"))  # {node: float('inf') for node in Q}
+    prior = defaultdict(lambda: None)
+
+    dist[start] = 0
+    #i = 0
+    while Q:
+        u = min(Q, key=dist.get)
+        if dist[end] == dist[u]:
+            u = end
+        P.add(u)
+        Q.remove(u)
+        if u == end:
+            return reconstruct_path(prior, end)
+        if dist[u] == float('inf'):
+            return 'Not found'
+        for neighbour in graph[u]:
+            if neighbour not in P:
+                Q.add(neighbour)
+            alt = dist[u] + graph[u][neighbour]
+            if alt < dist[neighbour]:
+                dist[neighbour] = alt
+                prior[neighbour] = u
+    return 'Not found'
+
+
 def sort_by_the_crow_flies(nodes, node, set_nodes):
 
     """
@@ -199,14 +232,15 @@ def Functionality4(node, set_nodes, d):
     return the list contain the shortest path
     """
     nodes, dict_distances = loading_data()
-    print("[DONE]")
     dist = dict_distances[d]
     sorted_set_nodes = sort_by_the_crow_flies(nodes, node, set_nodes)
-    path = [set_nodes[0]]
+    print(sorted_set_nodes)
+    path = [sorted_set_nodes[0]]
     for i in range(len(sorted_set_nodes)-1):
         start = sorted_set_nodes[i]
         end = sorted_set_nodes[i+1]
-        temp_path = A_Star(nodes, dist, start, end, h)
+        # temp_path = A_Star(nodes, dist, start, end, h)
+        temp_path = dijkstra(dist, start, end)
         if temp_path == 'Not possible':
             return 'Not possible'
         else:
