@@ -103,4 +103,4 @@ def bellman_ford(list_visit):
     return list_visit
 
 
-functionality(1, [5,4,7])
+#functionality(1, [5,4,7])
