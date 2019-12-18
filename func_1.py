@@ -1,3 +1,32 @@
+import pdb
+def initialize(get_distance_graph, source):
+    d = {} 
+    p = {}
+    for node in get_distance_graph:
+        d[node] = float('Inf') 
+        p[node] = None
+    d[source] = 0 
+    return d, p
+
+def relax(node, neighbour, get_distance_graph, d, p):
+   
+    if d[neighbour] > d[node] + get_distance_graph[node][neighbour]:
+      
+        d[neighbour]  = d[node] + get_distance_graph[node][neighbour]
+        p[neighbour] = node
+
+def bellman_ford(get_distance_graph, source):
+    d, p = initialize(get_distance_graph, source)
+    for i in range(len(get_distance_graph)-1): 
+        for u in get_distance_graph:
+            for v in get_distance_graph[u]: 
+                relax(u, v, get_distance_graph, d, p) 
+
+    for u in get_distance_graph:
+        for v in get_distance_graph[u]:
+            assert d[v] <= d[u] + get_distance_graph[u][v]
+
+    return d, p
 
 def functionality(strnode, vstnode):
     vertices, edges = get_distance_graph() 
