@@ -1,10 +1,11 @@
 import gzip
 import pandas as pd
 from collections import defaultdict
-#import func_1
+
+import func_1
 import func_2
 from func_3 import Functionality3, Visualization3
-from func_4 import Functionality4
+from func_4 import Functionality4, Visualization4
 
 
 # ----- Import Functions -----
@@ -91,51 +92,65 @@ print("[DONE]")
 
 # ----- Main -----
 def main():
-    # Choice the function
-    print("\nChoose the function")
-    n = int(input("Insert number (1-4): "))
-    while not all([n > 0, n < 5]):
-        n = int(input("Insert number (1-4): "))
-
-    # Choice the distance
     while True:
-        print("\nChoose the distance")
-        dist = input("d) Distance\n" +
-                     "t) Travel time\n" +
-                     "n) Network distance\n" +
-                     "Insert (d, t, n): ")
-        if dist in ['d', 't', 'n']:
+        # Choice the function
+        print("\nChoose the functionality:")
+        n = int(input("1) Functionality1\n" +
+                      "2) Functionality2\n" +
+                      "3) Functionality3\n" +
+                      "4) Functionality4\n" +
+                      "5) Exit\n" +
+                     "Insert (1-5): "))
+        while not all([n > 0, n < 6]):
+            n = int(input("1) Functionality1\n" +
+                          "2) Functionality2\n" +
+                          "3) Functionality3\n" +
+                          "4) Functionality4\n" +
+                          "5) Exit\n" +
+                         "Insert (1-5): "))
+        if n == 5:
+            print("Bye bye!!", flush=True)
             break
 
-    # Set start node
-    node = int(input("Start node: "))
+        # Choice the distance
+        while True:
+            print("\nChoose the distance:")
+            dist = input("d) Distance\n" +
+                         "t) Travel time\n" +
+                         "n) Network distance\n" +
+                         "Insert (d, t, n): ")
+            if dist in ['d', 't', 'n']:
+                break
 
-    # Switch
-    if n == 1:
-        # func_1
-        pass
-    elif n == 2:
-        # func_2
-        pass
-    elif n == 3:
-        print("Enter the nodes to be visited separated by white space:", end='')
-        list_nodes = list(map(int, input(" ").split()))
-        tot_dist, tot_path = Functionality3(node, list_nodes, dict_distances[dist])
-        Visualization3(tot_path, list_nodes, nodesDF)
+        # Set start node
+        node = int(input("Start node: "))
 
-    elif n == 4:
-        print("Enter the nodes to be visited separated by white space:",
-              end='')
-        set_nodes = list(map(int, input(" ").split()))
-        path, list_nodes = Functionality4(node,
-                                          set_nodes,
-                                          dict_distances[dist],
-                                          nodesDF)
-        Visualization3(tot_path, list_nodes, nodesDF)
-        # try Functionality4(2, [4,6,5,49], d, nodes)
-        pass
+        # Switch
+        if n == 1:
+            # func_1
+            pass
+        elif n == 2:
+            # func_2
+            pass
+        elif n == 3:
+            print("Enter the nodes to be visited separated by white space:", end='')
+            list_nodes = list(map(int, input(" ").split()))
+            tot_dist, tot_path = Functionality3(node, list_nodes, dict_distances[dist])
+            Visualization3(tot_path, list_nodes, nodesDF)
+
+        elif n == 4:
+            print("Enter the nodes to be visited separated by white space:",
+                  end='')
+            set_nodes = list(map(int, input(" ").split()))
+            path, list_nodes = Functionality4(node,
+                                              set_nodes,
+                                              dict_distances[dist],
+                                              nodesDF)
+            Visualization4(nodesDF, dict_distances[dist], path, list_nodes)
+            #Visualization3(path, list_nodes, nodesDF)
+            # try Functionality4(2, [4,6,5,49], d, nodes)
+            print(path)
 
 
 if __name__:
-    while True:
-        main()
+    main()
