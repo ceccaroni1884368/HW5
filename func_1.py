@@ -1,12 +1,4 @@
-import pdb
-def initialize(graph, source):
-    d = {} 
-    p = {} 
-    for node in graph:
-        d[node] = float('Inf') 
-        p[node] = None
-    d[source] = f
-    return d, p
+
 def functionality(strnode, vstnode):
     vertices, edges = get_distance_graph() 
 
