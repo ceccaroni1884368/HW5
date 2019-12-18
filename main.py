@@ -1,6 +1,6 @@
 import func_1
 import func_2
-from func_3 import Functionality3
+from func_3 import Functionality3, Visualization3
 from func_4 import Functionality4
 
 
@@ -32,8 +32,11 @@ def main():
         # func_2
         pass
     elif n == 3:
-        # func_3
-        pass
+        print("Enter the nodes to be visited separated by white space:", end='')
+        list_nodes = list(map(int, input(" ").split()))
+        tot_dist, tot_path = Functionality3(node, list_nodes, dist)
+        Visualization3(tot_path, list_nodes)
+       
     elif n == 4:
         print("Enter the nodes to be visited separated by white space:", end='')
         set_nodes = list(map(int, input(" ").split()))
