@@ -15,96 +15,16 @@ Given a starting node H and a path P to visit, its operation is:
 """
 
 
-def node_coordinate():
-    """
-    {Id Node : {Latitude: int, longitude: int},....}
-    """
-    nodes = {}
-    with gzip.open('USA-road-d.CAL.co.gz', 'rt') as f:
-        for line in f:
-            if 'v' == line.split()[0]:
-                node = int(line.split()[1])
-                latitude = int(line.split()[2])
-                longitude = int(line.split()[3])
-                nodes[node] = {'Latitude': latitude, 'Longitude': longitude}
-    return nodes
-
-
-def node_distance():
-    """
-    {Id Node 1: {Id Node 2: weight, Id Node 2: weight},....}
-    """
-    d = {}
-    with gzip.open('USA-road-d.CAL.gr.gz', 'rt') as f:
-        for line in f:
-            if 'a' == line.split()[0]:
-                node1 = int(line.split()[1])
-                node2 = int(line.split()[2])
-                w = int(line.split()[3])
-                if node1 in d:
-                    d[node1].update({node2: w})
-                else:
-                    d[node1] = {node2: w}
-    return d
-
-
-def node_travel_time():
-    """
-    {Id Node 1: {Id Node 2: weight, Id Node 2: weight},....}
-    """
-    t = {}
-    with gzip.open('USA-road-t.CAL.gr.gz', 'rt') as f:
-        for line in f:
-            if 'a' == line.split()[0]:
-                node1 = int(line.split()[1])
-                node2 = int(line.split()[2])
-                w = int(line.split()[3])
-                if node1 in t:
-                    t[node1].update({node2: w})
-                else:
-                    t[node1] = {node2: w}
-
-    return t
-
-
-def node_network_distance():
-    """
-    {Id Node 1: {Id Node 2: weight, Id Node 2: weight},....}
-    """
-    nd = {}
-    with gzip.open('USA-road-d.CAL.gr.gz', 'rt') as f:
-        for line in f:
-            if 'a' == line.split()[0]:
-                node1 = int(line.split()[1])
-                node2 = int(line.split()[2])
-                if node1 in nd:
-                    nd[node1].update({node2: 1})
-                else:
-                    nd[node1] = {node2: 1}
-    return nd
-
-
-def loading_data():
-    # Loading data
-    print("Loading data...", end='', flush=True)
-    nodes = node_coordinate()
-    d = node_distance()
-    t = node_travel_time()
-    net_d = node_network_distance()
-    print("[DONE]")
-
-    return nodes, {'d': d, 't': t, 'n': net_d}  # d : physical distance, t : time distance, n : network distance
-
-
 def h(nodes, current, neighbor):
 
     """
     Euclidean distance between current and neighbor
     """
-    x1 = nodes[current]['Latitude']
-    y1 = nodes[current]['Longitude']
-    x2 = nodes[neighbor]['Latitude']
-    y2 = nodes[neighbor]['Longitude']
+    nodes = nodes.set_index('Id Node')
+    x1 = nodes.at[current, 'Latitude']
+    y1 = nodes.at[current, 'Longitude']
+    x2 = nodes.at[neighbor, 'Latitude']
+    y2 = nodes.at[neighbor, 'Longitude']
     return sqrt((x1 - x2)**2 + (y1 - y2)**2)
 
 
@@ -185,10 +105,10 @@ def dijkstra(graph, start, end):
             return reconstruct_path(prior, end)
         if dist[u] == float('inf'):
             return 'Not found'
-        for neighbour in graph[u]:
+        for neighbour, distance in graph[u]:
             if neighbour not in P:
                 Q.add(neighbour)
-            alt = dist[u] + graph[u][neighbour]
+            alt = dist[u] + distance
             if alt < dist[neighbour]:
                 dist[neighbour] = alt
                 prior[neighbour] = u
@@ -216,7 +136,7 @@ def sort_by_the_crow_flies(nodes, node, set_nodes):
     return node_sorted
 
 
-def Functionality4(node, set_nodes, d):
+def Functionality4(node, set_nodes, dist, nodes):
     """
     :param node: the start node H
     :type node: int
@@ -231,10 +151,8 @@ def Functionality4(node, set_nodes, d):
     This function visualize the Shortest Approximate Route and
     return the list contain the shortest path
     """
-    nodes, dict_distances = loading_data()
-    dist = dict_distances[d]
+
     sorted_set_nodes = sort_by_the_crow_flies(nodes, node, set_nodes)
-    print(sorted_set_nodes)
     path = [sorted_set_nodes[0]]
     for i in range(len(sorted_set_nodes)-1):
         start = sorted_set_nodes[i]
@@ -245,17 +163,19 @@ def Functionality4(node, set_nodes, d):
             return 'Not possible'
         else:
             path += temp_path[1:]
-    print(path)
 
-    # Graph networkx
-    g = {key: dist[key] for key in path}
+    return path, sorted_set_nodes
+
+
+def Visualization4(nodes, dist, path, sorted_set_nodes):
+    g = {key: {k: v for k, v in dist[key]} for key in path}
     edges = [(path[i], path[i+1]) for i in range(len(path)-1)]
     G = nx.Graph(g)
-
+    nodes = nodes.set_index('Id Node')
     # Plot
     figure(num=None, figsize=(20, 15), dpi=80, facecolor='w', edgecolor='k')
-    pos = {key: (nodes[key]['Latitude'],
-                 nodes[key]['Longitude']) for key in nodes}
+    pos = {key: (nodes.at[key, 'Latitude'],
+                 nodes.at[key, 'Longitude']) for key in nodes.index}
     nx.draw_networkx_nodes(G, pos,
                            node_size=100,
                            node_color='royalblue')
@@ -282,5 +202,3 @@ def Functionality4(node, set_nodes, d):
                             font_family='sans-serif')
 
     plt.show()
-
-    return path
