@@ -163,7 +163,7 @@ def Functionality4(node, set_nodes, dist, nodes):
             return 'Not possible'
         else:
             path += temp_path[1:]
-
+    print(path, flush=True)
     return path, sorted_set_nodes
 
 
