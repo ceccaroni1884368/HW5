@@ -41,49 +41,36 @@ def reconstruct_path(cameFrom, current):
     return total_path
 
 
-def A_Star(nodes, graph, start, goal, h):
-    # A* finds a path from start to goal.
-    # h is the heuristic function. h(n) estimates the cost to reach goal
-    # from node n.
-    # The set of discovered nodes that may need to be (re-)expanded.
-    # Initially, only the start node is known.
-    openSet = {start}
+def A_Star(nodes, graph, start, end, h):
+     # Initialization
+    Q = {start}
+    P = set()
+    gdist = defaultdict(lambda: float("inf"))  # {node: float('inf') for node in Q}
+    fdist = defaultdict(lambda: float("inf"))
+    prior = defaultdict(lambda: None)
 
-    # For node n, cameFrom[n] is the node immediately preceding it on
-    # the cheapest path from start to n currently known.
-    cameFrom = {}  # an empty map
-
-    # For node n, gScore[n] is the cost of the cheapest path from start
-    # to n currently known.
-    Q = list(set(graph))
-    gScore = {node: float('inf') for node in Q}
-    gScore[start] = 0
-
-    # For node n, fScore[n] := gScore[n] + h(n).
-    fScore = {node: float('inf') for node in Q}
-    fScore[start] = h(nodes, start, goal)
-
-    while openSet:
-        current = min(openSet, key=fScore.get)  # the node in openSet having
-                                                # the lowest fScore[] value
-        if current == goal:
-            return reconstruct_path(cameFrom, current)
-
-        openSet.remove(current)
-        for neighbor in graph[current]:
-            # d(current,neighbor) is the weight of the edge
-            # from current to neighbor
-            # tentative_gScore is the distance from start to the neighbor
-            # through current
-            tentative_gScore = gScore[current] + graph[current][neighbor]
-            if tentative_gScore < gScore[neighbor]:
-                cameFrom.update({neighbor: current})
-                gScore[neighbor] = tentative_gScore
-                fScore[neighbor] = gScore[neighbor] + h(nodes, neighbor, goal)
-                if neighbor not in openSet:
-                    openSet.add(neighbor)
-    # Open set is empty but goal was never reached
-    return 'Not possible'
+    gdist[start] = 0
+    fdist[start] = h(nodes, start, end)
+    #i = 0
+    while Q:
+        u = min(Q, key=fdist.get)
+        if fdist[end] == fdist[u]:
+            u = end
+        P.add(u)
+        Q.remove(u)
+        if u == end:
+            return reconstruct_path(prior, end)
+        if fdist[u] == float('inf'):
+            return 'Not found'
+        for neighbour, distance in graph[u]:
+            if neighbour not in P:
+                Q.add(neighbour)
+            alt = gdist[u] + distance
+            if alt < gdist[neighbour]:
+                gdist[neighbour] = alt
+                fdist[neighbour] = gdist[neighbour] + h(nodes, neighbour, end)
+                prior[neighbour] = u
+    return 'Not found'
 
 
 def dijkstra(graph, start, end):
@@ -157,7 +144,7 @@ def Functionality4(node, set_nodes, dist, nodes):
     for i in range(len(sorted_set_nodes)-1):
         start = sorted_set_nodes[i]
         end = sorted_set_nodes[i+1]
-        # temp_path = A_Star(nodes, dist, start, end, h)
+        #temp_path = A_Star(nodes, dist, start, end, h)
         temp_path = dijkstra(dist, start, end)
         if temp_path == 'Not possible':
             return 'Not possible'
