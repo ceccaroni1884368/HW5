@@ -77,11 +77,11 @@ def Visualization2(e, graph, nodesDF):
                       longitude= nodesDF.iloc[v].Latitude)
 
     E = defaultdict(list)
-    for p in (n + ne):
+    for p in (n):
         for v,d in graph[p]:
             if v in (n + ne):
                 E[p].append((v, d))
-    for n1 in (n + ne):
+    for n1 in (n):
         for n2, d in E[n1]:
             G.add_edge(n1, n2, weight = d)
 
