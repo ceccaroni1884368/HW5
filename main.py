@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 
 from func_1 import Functionality1, Visualization1
-import func_2
+from func_2 import Functionality2
 from func_3 import Functionality3, Visualization3
 from func_4 import Functionality4, Visualization4
 
@@ -122,25 +122,33 @@ def main():
             if dist in ['d', 't', 'n']:
                 break
 
-        # Set start node
-        node = int(input("Start node: "))
+
 
         # Switch
         if n == 1:
+            # Set start node
+            node = int(input("Start node: "))
             d = int(input('Enter the thrushhold for the type of weight: '))
             n, e_min, e_max, ne = Functionality1(node, dict_distances[dist], d)
             print(n, flush=True)
             Visualization1(n, e_min, e_max, ne, dict_distances[dist], nodesDF)
         elif n == 2:
-            # func_2
-            pass
+            #nodes_list = [1,1048577, 1766,1048579, 3]
+            print("Enter the nodes to be visited separated by white space:", end='')
+            list_nodes = list(map(int, input(" ").split()))
+            e, d = Functionality2(dict_distances[dist], list_nodes)
+            print(e)
         elif n == 3:
+            # Set start node
+            node = int(input("Start node: "))
             print("Enter the nodes to be visited separated by white space:", end='')
             list_nodes = list(map(int, input(" ").split()))
             tot_dist, tot_path = Functionality3(node, list_nodes, dict_distances[dist])
             Visualization3(tot_path, list_nodes, nodesDF)
 
         elif n == 4:
+            # Set start node
+            node = int(input("Start node: "))
             print("Enter the nodes to be visited separated by white space:",
                   end='')
             set_nodes = list(map(int, input(" ").split()))
