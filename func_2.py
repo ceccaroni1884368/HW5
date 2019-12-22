@@ -25,11 +25,11 @@ def is_connected(v_list, G):
         return False
 
 
-def myPrim(set_nodes, dist, reduced_dict):
+def myPrim(set_nodes, reduced_dict):
     set_nodes = list(set_nodes)
     start, set_nodes = set_nodes[0], set_nodes[1:]
     visited = [start]
-    final_edges = {}
+    final_edges = set()
     tot_distance = 0
     while len(set_nodes)>0:
         tot_edges = []
@@ -40,7 +40,7 @@ def myPrim(set_nodes, dist, reduced_dict):
             for edge in tot_edges:
                 if edge[0] not in visited and edge[1] < min_length:
                     min_length = edge[1]
-                    selected_edge = {(node, edge[0])}
+                    selected_edge = (node, edge[0])
         visited.append(selected_edge[1])
         set_nodes.remove(selected_edge[1])
         tot_distance += min_length
@@ -52,7 +52,7 @@ def Function2(dist, nodes):
     G = graph_reduct(dist, nodes)
 
     if is_connected(nodes, G):
-        print(G)
-        myPrim(nodes, dist, G)
+        #print(G)
+        return myPrim(nodes, G)
     else:
         return "Error!"
