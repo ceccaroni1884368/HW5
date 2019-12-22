@@ -2,7 +2,7 @@ import gzip
 import pandas as pd
 from collections import defaultdict
 
-import func_1
+from func_1 import Functionality1, Visualization1
 import func_2
 from func_3 import Functionality3, Visualization3
 from func_4 import Functionality4, Visualization4
@@ -127,8 +127,10 @@ def main():
 
         # Switch
         if n == 1:
-            # func_1
-            pass
+            d = int(input('Enter the thrushhold for the type of weight: '))
+            n, e_min, e_max, ne = Functionality1(node, dict_distances[dist], d)
+            print(n, flush=True)
+            Visualization1(n, e_min, e_max, ne, dict_distances[dist], nodesDF)
         elif n == 2:
             # func_2
             pass
@@ -146,8 +148,8 @@ def main():
                                               set_nodes,
                                               dict_distances[dist],
                                               nodesDF)
-            Visualization4(nodesDF, dict_distances[dist], path, list_nodes)
-            #Visualization3(path, list_nodes, nodesDF)
+            #Visualization4(nodesDF, dict_distances[dist], path, list_nodes)
+            Visualization3(path, list_nodes, nodesDF)
             # try Functionality4(2, [4,6,5,49], d, nodes)
             print(path)
 
