@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 
 from func_1 import Functionality1, Visualization1
-from func_2 import Functionality2
+from func_2 import Functionality2, Visualization2
 from func_3 import Functionality3, Visualization3
 from func_4 import Functionality4, Visualization4
 
@@ -137,7 +137,8 @@ def main():
             print("Enter the nodes to be visited separated by white space:", end='')
             list_nodes = list(map(int, input(" ").split()))
             e, d = Functionality2(dict_distances[dist], list_nodes)
-            print(e)
+            print(e, flush=True)
+            Visualization2(e, dict_distances[dist], nodesDF)
         elif n == 3:
             # Set start node
             node = int(input("Start node: "))
