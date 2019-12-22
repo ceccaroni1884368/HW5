@@ -62,7 +62,12 @@ def Visualization3(tot_path, list_nodes, nodesDF):
     lats_visit = visit.Longitude.values
     longs_visit = visit.Latitude.values
     fig, ax = plt.subplots(figsize=(12,9))
-    ax.plot(longs, lats, 'orange', linewidth=1.5, marker =11, markersize=8)
+    if dist == 'd':
+        ax.plot(longs, lats, 'orange', linewidth=1.5, marker =11, markersize=8)
+    elif dist == 't':
+        ax.plot(longs, lats, 'hotpink', linewidth=1.5, marker =11, markersize=8)
+    else:
+        ax.plot(longs, lats, 'c', linewidth=1.5, marker =11, markersize=8)
     ax.plot(longs[0], lats[0], 'gX', markersize=18)
     ax.plot(longs_visit, lats_visit, 'bo', markersize = 10)
     ax.plot(longs[-1], lats[-1], 'ro', markersize=18)
