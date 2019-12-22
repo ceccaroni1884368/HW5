@@ -72,7 +72,7 @@ def Visualization2(e, graph, nodesDF):
 
     nodesDF.set_index = 'Id Nodes'
     G = nx.Graph()
-    for v in (n + ne):
+    for v in (n):
         G.add_node(v, latitude=nodesDF.iloc[v].Longitude,
                       longitude= nodesDF.iloc[v].Latitude)
 
