@@ -56,3 +56,64 @@ def Functionality2(dist, nodes):
         return myPrim(nodes, G)
     else:
         return "Error!"
+
+
+
+def Visualization2(e, graph, nodesDF):
+    n = set()
+    for x,y in e:
+        n.add(x)
+        n.add(y)
+    n = list(n)
+    
+    nodesDF.set_index = 'Id Nodes'
+    G = nx.Graph()
+    for v in (n + ne):
+        G.add_node(v, latitude=nodesDF.iloc[v].Longitude,
+                      longitude= nodesDF.iloc[v].Latitude)
+
+    E = defaultdict(list)
+    for p in (n + ne):
+        for v,d in graph[p]:
+            if v in (n + ne):
+                E[p].append((v, d))
+    for n1 in (n + ne):
+        for n2, d in E[n1]:
+            G.add_edge(n1, n2, weight = d)
+
+    #map
+    def map(nodelst): #start point
+        pos = G.nodes[nodelst[0]]
+        vismap = folium.Map(location=[pos['latitude'], pos['longitude']], zoom_start=10)
+        folium.raster_layers.TileLayer('Open Street Map').add_to(vismap)
+        folium.raster_layers.TileLayer('Stamen Terrain').add_to(vismap)
+        folium.LayerControl().add_to(vismap)
+        #minimap
+        visminimap = plugins.MiniMap(toggle_display=True)
+        #add to map
+        vismap.add_child(visminimap)
+        plugins.ScrollZoomToggler().add_to(vismap)
+        folium.Marker(location=[(pos['latitude']),(pos['longitude'])],
+                      icon=folium.Icon(color='red', icon='home'), popup = (nodelst[0])).add_to(vismap)
+        for i in range (len(nodelst)-1):
+            pos = (G.nodes[nodelst[i+1]])
+            folium.Marker(location=[(pos['latitude']),(pos['longitude'])],popup = (nodelst[i+1])).add_to(vismap)
+
+        return vismap
+    #adding all nodes to map
+    def map_routes(lst,map_name):
+        for t in range (len(lst)):
+            cordlst = 0
+            cordlst = []
+            a = (lst[t])
+            for i in a:
+                cordlst.append(list(G.nodes[i].values()))
+            plugins.AntPath(cordlst).add_to(map_name)
+        return map_name
+
+    omap = map(n)
+    map_routes(e,omap)
+    #map_routespoly(e_max,omap)
+    #circlemarker(ne,omap)
+
+    omap.save('F1map.html')
