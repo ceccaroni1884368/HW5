@@ -107,6 +107,22 @@ def map_routes(lst,map_name):
             cordlst.append(list(G.nodes[i].values())) 
         plugins.AntPath(cordlst).add_to(map_name)
     return map_name
+#NEW ADDED
+def map_routespoly(lst,map_name):
+    for t in range (len(lst)):
+        cordlst = 0
+        cordlst = []
+        a = (lst[t])             
+        for i in a:
+            cordlst.append(list(G.nodes[i].values())) 
+        folium.vector_layers.PolyLine(cordlst, color = 'red').add_to(map_name)
+    return map_name
+def circlemarker(lst,map_name): 
+    for i in range (len(lst)):
+        pos = (G.nodes[lst[i]])
+        folium.CircleMarker(location=[(pos['latitude']),(pos['longitude'])], radius=10, color='blue', fill_color='red',
+                  popup = (lst[i])).add_to(map_name)
+    return map_name
     #function vizualization
 v = (int(input('Enter the node number: ')))
 p = (input('Enter the type of weight, either distance or time: '))
