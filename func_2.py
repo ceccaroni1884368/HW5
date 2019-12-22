@@ -1,3 +1,30 @@
+from collections import defaultdict
+
+
+def graph_reduct(G, nodes):
+    G_red = defaultdict(list)
+    for n1 in nodes:
+        for n2, d in G[n1]:
+            if n2 in nodes:
+                G_red[n1].append((n2, d))
+    return G_red
+
+def is_connected(v_list, G):
+    Q = []
+    V = []
+    Q.append(v_list[0])
+    while Q:
+        u = Q.pop()
+        V.append(u)
+        for n, d in G[u]:
+            if n not in V:
+                Q.append(n)
+    if set(v_list) == set(V):
+        return True
+    else:
+        return False
+
+
 def myPrim(set_nodes, dist, reduced_dict):
     set_nodes = list(set_nodes)
     start, set_nodes = set_nodes[0], set_nodes[1:]
@@ -7,7 +34,7 @@ def myPrim(set_nodes, dist, reduced_dict):
     while len(set_nodes)>0:
         tot_edges = []
         min_length = float('inf')
-        selected_edge = {} 
+        selected_edge = {}
         for node in visited:
             tot_edges.extend(reduced_dict[node])
             for edge in tot_edges:
@@ -19,3 +46,13 @@ def myPrim(set_nodes, dist, reduced_dict):
         tot_distance += min_length
         final_edges.add(selected_edge)
     return final_edges, tot_distance
+
+
+def Function2(dist, nodes):
+    G = graph_reduct(dist, nodes)
+
+    if is_connected(nodes, G):
+        print(G)
+        myPrim(nodes, dist, G)
+    else:
+        return "Error!"
