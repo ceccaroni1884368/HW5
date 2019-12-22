@@ -61,8 +61,6 @@ def Functionality2(dist, nodes):
     else:
         return "Error!"
 
-
-
 def Visualization2(e, graph, nodesDF):
     n = set()
     for x,y in e:
@@ -116,28 +114,8 @@ def Visualization2(e, graph, nodesDF):
         return map_name
 
     omap = map(n)
-    map_routes(e,omap)
+    map_routes(list(e),omap)
     #map_routespoly(e_max,omap)
     #circlemarker(ne,omap)
 
-    omap.save('F1map.html')
-    
-def Visualization2(final_edges, set_nodes, dist):
-    fig, ax = plt.subplots(figsize=(12,9))
-    visit = nodesDF[nodesDF['Id Node'].isin(list_nodes)]
-    lats_visit = visit.Longitude.values
-    longs_visit = visit.Latitude.values
-    ax.plot(longs_visit, lats_visit, 'bo', markersize = 10)  # visited points
-    
-    for edge in final_edges:
-        edge_coords = nodesDF[nodesDF['Id Node'].isin([edge[0],edge[1]])]
-        lats = edge_coords.Longitude.values
-        longs = edge_coords.Latitude.values
-        if dist == 'd':
-            ax.plot(longs, lats, 'orange', linewidth=1.5)
-        elif dist == 't':
-            ax.plot(longs, lats, 'hotpink', linewidth=1.5)
-        else:
-            ax.plot(longs, lats, 'c', linewidth=1.5)
-    mplleaflet.show(fig=fig)
-    return fig
+    omap.save('F2map.html')
