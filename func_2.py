@@ -1,5 +1,9 @@
+import heapq as hp
+import networkx as nx
 from collections import defaultdict
-
+import folium
+from folium import plugins
+import heapq as hp
 
 def graph_reduct(G, nodes):
     G_red = defaultdict(list)
@@ -65,7 +69,7 @@ def Visualization2(e, graph, nodesDF):
         n.add(x)
         n.add(y)
     n = list(n)
-    
+
     nodesDF.set_index = 'Id Nodes'
     G = nx.Graph()
     for v in (n + ne):
