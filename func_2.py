@@ -48,7 +48,7 @@ def myPrim(set_nodes, reduced_dict):
     return final_edges, tot_distance
 
 
-def Function2(dist, nodes):
+def Functionality2(dist, nodes):
     G = graph_reduct(dist, nodes)
 
     if is_connected(nodes, G):
